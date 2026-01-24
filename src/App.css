@@ -1,0 +1,103 @@
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #888;
+  --accent: #ffffff;
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  overflow-x: hidden;
+}
+
+.in-c-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--bg-secondary);
+  padding-bottom: 2rem;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 200;
+  letter-spacing: -0.05em;
+  margin: 0;
+  background: linear-gradient(to right, #fff, #666);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+button {
+  background: var(--bg-secondary);
+  border: 1px solid #333;
+  color: var(--text-primary);
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+button:hover {
+  background: #252525;
+  border-color: #555;
+}
+
+button.primary {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-weight: 600;
+}
+
+button.primary:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.info-section {
+  margin-top: auto;
+  padding-top: 3rem;
+  border-top: 1px solid var(--bg-secondary);
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.info-section h3 {
+  color: var(--text-primary);
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.info-section p {
+  margin-top: 1rem;
+}
