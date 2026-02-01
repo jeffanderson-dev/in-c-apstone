@@ -1,24 +1,19 @@
-# Project Setup and Basic UI
+# Adding Audio with Tone.js
 
 ## Goals
 
-- Set up a React + Vite project
-- Create a basic UI with title and control buttons
-
-## Building
-
-A simple web page with:
-
-- "In C" title and subtitle
-- Play/Pause and Reset buttons
-- Basic dark-themed styling
+- Integrate Tone.js library for Web Audio
+- Create a simple synthesizer that plays a note
+- Make the Play/Pause button control audio
+- Understand audio context initialization
 
 ## Key Concepts
 
-- React functional components
-- JSX syntax
-- CSS styling with CSS variables
-- Project structure (src, components, assets)
+- Web Audio API basics (via Tone.js)
+- `Tone.start()` for initializing audio context
+- `Tone.Transport` for timing
+- Basic synthesizers and `triggerAttackRelease`
+- Async operations (starting audio requires user interaction)
 
 ## Running This Project
 

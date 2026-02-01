@@ -1,17 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import * as Tone from 'tone';
 import './App.css';
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const pulseSynthRef = useRef(null);
+  const pulseLoopRef = useRef(null);
+
+  useEffect(() => {
+    if (isPlaying) {
+      // Initialize audio when user starts
+      const initAudio = async () => {
+        await Tone.start();
+        console.log('Audio context started!');
+
+        // Create a simple synth for the pulse
+        pulseSynthRef.current = new Tone.Synth({
+          oscillator: { type: 'square' },
+          envelope: { attack: 0.01, decay: 0.1, sustain: 0.1, release: 0.1 }
+        }).toDestination();
+
+        // Set volume
+        pulseSynthRef.current.volume.value = -10;
+
+        // Create a loop that plays every 8th note
+        pulseLoopRef.current = new Tone.Loop((time) => {
+          pulseSynthRef.current.triggerAttackRelease("C5", "16n", time);
+        }, "8n");
+
+        // Start the transport and loop
+        Tone.Transport.start();
+        pulseLoopRef.current.start(0);
+      };
+
+      initAudio();
+    } else {
+      // Stop and cleanup
+      if (pulseLoopRef.current) {
+        pulseLoopRef.current.stop();
+        pulseLoopRef.current.dispose();
+        pulseLoopRef.current = null;
+      }
+      Tone.Transport.stop();
+    }
+
+    // Cleanup on unmount
+    return () => {
+      if (pulseLoopRef.current) {
+        pulseLoopRef.current.stop();
+        pulseLoopRef.current.dispose();
+      }
+      if (pulseSynthRef.current) {
+        pulseSynthRef.current.dispose();
+      }
+      Tone.Transport.stop();
+    };
+  }, [isPlaying]);
 
   const handleStartStop = () => {
     setIsPlaying(!isPlaying);
-    console.log(isPlaying ? 'Pausing...' : 'Starting...');
   };
 
   const handleReset = () => {
     setIsPlaying(false);
-    console.log('Resetting...');
   };
 
   return (
