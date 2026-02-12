@@ -83,6 +83,36 @@ button.primary:hover {
   transform: translateY(-1px);
 }
 
+.musician-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.musician-card {
+  background: var(--bg-secondary);
+  padding: 1.25rem;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  transition: border-color 0.3s ease;
+}
+
+.musician-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.phrase-indicator {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
 .info-section {
   margin-top: auto;
   padding-top: 3rem;
