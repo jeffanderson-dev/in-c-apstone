@@ -131,3 +131,17 @@ button.primary:hover {
 .info-section p {
   margin-top: 1rem;
 }
+
+.wait-indicator {
+  color: #ffaa55;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}

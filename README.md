@@ -1,26 +1,22 @@
-# In C[S]
+# Musician Coordination & the 3-Phrase Rule
 
 ## Goals
-
-- Create multiple "musicians" each playing independently
-- Display musician cards showing their current phrase
-- Understand state management for multiple entities
-- Learn about React's `useState` for arrays of objects
-- A grid of musician cards
-- Each musician shows which phrase they're currently on
-- Musicians all start at phrase 1 and advance together for now
-- Visual representation of each musician
+- Implement the "3-phrase rule" - no musician can be more than 3 phrases ahead
+- Add probabilistic phrase advancement
+- Musicians now move through phrases independently
+- See real-time updates of each musician's progress
+- `useInCEngine` custom hook for managing musician state and advancement logic
+- Callback function `advanceMusician` that decides when to move to next phrase
+- Constraint checking so musicians stay within 3 phrases of the slowest
+- UI updates to show which musicians are waiting
 
 ## Key Concepts
-
-- Data structures for notes and durations
-- Musical note notation ("C4", "E4", etc etc)
-- Note durations ('8n' = eighth note, '4n' = quarter note)
-- Component composition (MusicianCard component)
-- Dynamic styling with inline styles
+- Game loop / state machine concepts
+- Probabilistic logic (Math.random())
+- Constraint satisfaction (can't advance if too far ahead)
+- useCallback and useRef for performance
 
 ## Running This Project
-
 ```bash
 npm install
 npm run dev
