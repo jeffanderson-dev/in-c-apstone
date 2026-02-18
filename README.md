@@ -1,6 +1,5 @@
-# Musician Coordination & the 3-Phrase Rule
-
 ## Goals
+
 - Implement the "3-phrase rule" - no musician can be more than 3 phrases ahead
 - Add probabilistic phrase advancement
 - Musicians now move through phrases independently
@@ -11,12 +10,14 @@
 - UI updates to show which musicians are waiting
 
 ## Key Concepts
+
 - Game loop / state machine concepts
 - Probabilistic logic (Math.random())
 - Constraint satisfaction (can't advance if too far ahead)
 - useCallback and useRef for performance
 
 ## Running This Project
+
 ```bash
 npm install
 npm run dev
