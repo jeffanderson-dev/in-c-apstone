@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { Play, Pause, RotateCcw } from "lucide-react";
 import { useInCEngine } from "./hooks/useInCEngine";
 import { useAudioEngine } from "./hooks/useAudioEngine";
 import MusicianCard from "./components/MusicianCard";
+import TimelineView from "./components/TimelineView";
+import "./components/TimelineView.css";
 import "./App.css";
 
 function App() {
-  const [musicianCount] = useState(6);
+  const [musicianCount] = useState(8);
   const {
     musicians,
     isPlaying,
@@ -15,7 +18,6 @@ function App() {
     advanceMusician,
   } = useInCEngine(musicianCount);
 
-  // use audio engine
   useAudioEngine(stateRef, advanceMusician, isPlaying);
 
   const handleStartStop = () => {
@@ -35,12 +37,28 @@ function App() {
 
         <div className="controls">
           <button className="primary" onClick={handleStartStop}>
-            {isPlaying ? "Pause Performance" : "Begin Performance"}
+            {isPlaying ? (
+              <span
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <Pause size={16} /> Pause Performance
+              </span>
+            ) : (
+              <span
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <Play size={16} /> Begin Performance
+              </span>
+            )}
           </button>
 
-          <button onClick={handleReset}>Reset</button>
+          <button onClick={handleReset}>
+            <RotateCcw size={16} />
+          </button>
         </div>
       </header>
+
+      <TimelineView musicians={musicians} />
 
       <div className="musician-grid">
         {musicians.map((m) => (

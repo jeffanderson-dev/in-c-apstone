@@ -1,0 +1,80 @@
+/* Timeline Styling */
+
+.timeline-container {
+  margin: 2rem 0 3rem 0;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+
+.timeline-track-bg {
+  position: relative;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: #333;
+  z-index: 0;
+}
+
+.timeline-marker {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: #333;
+  z-index: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-secondary);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.timeline-dot:hover {
+  z-index: 100 !important;
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.dot-tooltip {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 0.6rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.timeline-dot:hover .dot-tooltip {
+  opacity: 1;
+}

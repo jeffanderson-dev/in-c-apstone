@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import * as Tone from "tone";
-import { phrases } from "../data/phrases";
+import { useEffect, useRef } from 'react';
+import * as Tone from 'tone';
+import { phrases } from '../data/phrases';
 
 const LOOK_AHEAD = 1.0;
 const CHECK_INTERVAL = 0.5;
@@ -26,7 +26,7 @@ export function useAudioEngine(stateRef, advanceMusician, isPlaying) {
         schedulerIdRef.current = null;
       }
 
-      synthsRef.current.forEach((s) => s.dispose());
+      synthsRef.current.forEach(s => s.dispose());
       synthsRef.current = [];
 
       if (pulseSynthRef.current) {
@@ -42,41 +42,39 @@ export function useAudioEngine(stateRef, advanceMusician, isPlaying) {
 
       // pulse synth
       pulseSynthRef.current = new Tone.Synth({
-        oscillator: { type: "square" },
-        envelope: { attack: 0.01, decay: 0.1, sustain: 0.1, release: 0.1 },
+        oscillator: { type: 'square' },
+        envelope: { attack: 0.01, decay: 0.1, sustain: 0.1, release: 0.1 }
       }).toDestination();
       pulseSynthRef.current.volume.value = -10;
 
       pulseLoopRef.current = new Tone.Loop((time) => {
-        if (pulseSynthRef.current) {
-          pulseSynthRef.current.triggerAttackRelease("C5", "16n", time);
-        }
+        pulseSynthRef.current.triggerAttackRelease("C5", "16n", time);
       }, "8n");
 
       // create synths for each musician
       for (let i = 0; i < stateRef.current.musicians.length; i++) {
         const synth = new Tone.Synth({
-          oscillator: { type: "sine" },
-          envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
+          oscillator: { type: 'sine' },
+          envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 }
         }).toDestination();
         synth.volume.value = -12;
         synthsRef.current.push(synth);
       }
 
-      // initialize timing
-      const now = Tone.getTransport().seconds;
-      stateRef.current.musicians.forEach((m) => {
+      Tone.getTransport().start();
+      pulseLoopRef.current.start(0);
+
+      // initialize timing using audio context time (Tone.now()), not transport seconds
+      const now = Tone.now();
+      stateRef.current.musicians.forEach(m => {
         if (m.nextNoteTime <= now) {
           m.nextNoteTime = now + 0.1;
         }
       });
 
-      Tone.getTransport().start();
-      pulseLoopRef.current.start(0);
-
       // scheduling function
       const schedule = () => {
-        const now = Tone.getTransport().seconds;
+        const now = Tone.now();
         const limit = now + LOOK_AHEAD;
 
         stateRef.current.musicians.forEach((musician, index) => {
@@ -105,22 +103,16 @@ export function useAudioEngine(stateRef, advanceMusician, isPlaying) {
             // check if phrase is complete
             if (musician.noteIndex >= phrase.notes.length) {
               musician.noteIndex = 0;
-              // call the advance logic
+              // call the advanceMusician logic
               advanceMusician(index);
             }
           }
         });
 
-        schedulerIdRef.current = Tone.getTransport().schedule(
-          schedule,
-          "+" + CHECK_INTERVAL,
-        );
+        schedulerIdRef.current = Tone.getTransport().schedule(schedule, "+" + CHECK_INTERVAL);
       };
 
-      schedulerIdRef.current = Tone.getTransport().schedule(
-        schedule,
-        Tone.getTransport().seconds + 0.1,
-      );
+      schedulerIdRef.current = Tone.getTransport().schedule(schedule, "+" + 0.1);
     };
 
     initAudio();
