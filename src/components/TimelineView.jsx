@@ -43,9 +43,9 @@ const TimelineView = ({ musicians }) => {
 
         {/* musician dots */}
         {musicians.map((m) => {
-          const progress =
-            TOTAL_PHRASES > 1 ? (m.phraseIndex / (TOTAL_PHRASES - 1)) * 100 : 0;
+          const progress = (m.phraseIndex / (TOTAL_PHRASES - 1)) * 100;
           // add a little random jitter to 'top' so they don't perfectly overlap if on same phrase
+          // use a deterministic hash based on ID so it doesn't jump around
           const topOffset = (m.id % 5) * 6 - 10;
 
           return (

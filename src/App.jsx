@@ -1,24 +1,27 @@
-import { useState } from "react";
-import { Play, Pause, RotateCcw } from "lucide-react";
-import { useInCEngine } from "./hooks/useInCEngine";
-import { useAudioEngine } from "./hooks/useAudioEngine";
-import MusicianCard from "./components/MusicianCard";
-import TimelineView from "./components/TimelineView";
-import "./components/TimelineView.css";
-import "./App.css";
+import { useState } from 'react';
+import { Play, Pause, RotateCcw } from 'lucide-react';
+import { useInCEngine } from './hooks/useInCEngine';
+import { useAudioEngine } from './hooks/useAudioEngine';
+import MusicianCard from './components/MusicianCard';
+import TimelineView from './components/TimelineView';
+import './components/TimelineView.css';
+import './App.css';
 
 function App() {
-  const [musicianCount] = useState(8);
-  const {
-    musicians,
-    isPlaying,
-    setIsPlaying,
-    reset,
-    stateRef,
+  const [musicianCount] = useState(12);
+  const { 
+    musicians, 
+    isPlaying, 
+    setIsPlaying, 
+    reset, 
+    stateRef, 
     advanceMusician,
+    setMusicianVolume,
+    pulseVolume,
+    setPulseVolume
   } = useInCEngine(musicianCount);
 
-  useAudioEngine(stateRef, advanceMusician, isPlaying);
+  useAudioEngine(stateRef, advanceMusician, isPlaying, pulseVolume);
 
   const handleStartStop = () => {
     setIsPlaying(!isPlaying);
@@ -38,15 +41,11 @@ function App() {
         <div className="controls">
           <button className="primary" onClick={handleStartStop}>
             {isPlaying ? (
-              <span
-                style={{ display: "flex", alignItems: "center", gap: "8px" }}
-              >
+              <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Pause size={16} /> Pause Performance
               </span>
             ) : (
-              <span
-                style={{ display: "flex", alignItems: "center", gap: "8px" }}
-              >
+              <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Play size={16} /> Begin Performance
               </span>
             )}
@@ -55,6 +54,21 @@ function App() {
           <button onClick={handleReset}>
             <RotateCcw size={16} />
           </button>
+
+          <div className="slider-group" style={{ marginLeft: '1rem' }}>
+            <label htmlFor="pulse-vol" style={{ fontSize: '0.9rem', color: '#888' }}>
+              Pulse Volume
+            </label>
+            <input
+              id="pulse-vol"
+              type="range"
+              min="-60"
+              max="0"
+              value={pulseVolume}
+              onChange={(e) => setPulseVolume(parseFloat(e.target.value))}
+              style={{ accentColor: '#aaa', width: '80px' }}
+            />
+          </div>
         </div>
       </header>
 
@@ -62,7 +76,7 @@ function App() {
 
       <div className="musician-grid">
         {musicians.map((m) => (
-          <MusicianCard key={m.id} musician={m} />
+          <MusicianCard key={m.id} musician={m} setVolume={setMusicianVolume} />
         ))}
       </div>
 

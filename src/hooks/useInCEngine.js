@@ -26,6 +26,7 @@ export function useInCEngine(musicianCount) {
       noteIndex: 0,
       color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`,
       isWaiting: false,
+      volume: -12,
     }));
 
     stateRef.current = {
@@ -44,10 +45,7 @@ export function useInCEngine(musicianCount) {
     const musician = state.musicians[musicianId];
 
     // calculate minimum phrase index across all musicians
-    const minIndex =
-      state.musicians.length > 0
-        ? Math.min(...state.musicians.map((m) => m.phraseIndex))
-        : 0;
+    const minIndex = Math.min(...state.musicians.map((m) => m.phraseIndex));
     state.minPhraseIndex = minIndex;
 
     // check if musician can advance (stay within 3-phrase rule)
