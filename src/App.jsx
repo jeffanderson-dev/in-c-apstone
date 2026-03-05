@@ -18,10 +18,12 @@ function App() {
     advanceMusician,
     setMusicianVolume,
     pulseVolume,
-    setPulseVolume
+    setPulseVolume,
+    bpm,
+    setBpm,
   } = useInCEngine(musicianCount);
 
-  useAudioEngine(stateRef, advanceMusician, isPlaying, pulseVolume);
+  useAudioEngine(stateRef, advanceMusician, isPlaying, pulseVolume, bpm);
 
   const handleStartStop = () => {
     setIsPlaying(!isPlaying);
@@ -66,6 +68,21 @@ function App() {
               max="0"
               value={pulseVolume}
               onChange={(e) => setPulseVolume(parseFloat(e.target.value))}
+              style={{ accentColor: '#aaa', width: '80px' }}
+            />
+          </div>
+
+          <div className="slider-group" style={{ marginLeft: '1rem' }}>
+            <label htmlFor="bpm" style={{ fontSize: '0.9rem', color: '#888' }}>
+              BPM: {bpm}
+            </label>
+            <input
+              id="bpm"
+              type="range"
+              min="40"
+              max="160"
+              value={bpm}
+              onChange={(e) => setBpm(parseInt(e.target.value, 10))}
               style={{ accentColor: '#aaa', width: '80px' }}
             />
           </div>

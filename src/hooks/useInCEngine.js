@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { TOTAL_PHRASES } from "../data/phrases";
 
+const DEFAULT_PULSE_VOLUME = -20;
+const DEFAULT_BPM = 72;
+
 // how many times must a musician repeat a phrase before considering advancing
 const MIN_REPEATS = 3;
 // probability of advancing after minimum repeats met
@@ -11,6 +14,8 @@ const MAX_DISTANCE = 3;
 export function useInCEngine(musicianCount) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [uiState, setUiState] = useState([]);
+  const [pulseVolume, setPulseVolume] = useState(DEFAULT_PULSE_VOLUME);
+  const [bpm, setBpm] = useState(DEFAULT_BPM);
 
   const stateRef = useRef({
     musicians: [],
@@ -80,6 +85,13 @@ export function useInCEngine(musicianCount) {
     setUiState([...state.musicians]);
   }, []);
 
+  const setMusicianVolume = useCallback((id, volume) => {
+    const musician = stateRef.current.musicians[id];
+    if (musician) {
+      musician.volume = volume;
+    }
+  }, [stateRef]);
+
   return {
     musicians: uiState,
     isPlaying,
@@ -87,5 +99,10 @@ export function useInCEngine(musicianCount) {
     reset,
     stateRef,
     advanceMusician,
+    setMusicianVolume,
+    pulseVolume,
+    setPulseVolume,
+    bpm,
+    setBpm,
   };
 }

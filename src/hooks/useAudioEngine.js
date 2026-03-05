@@ -11,11 +11,13 @@ export function useAudioEngine(
   advanceMusician,
   isPlaying,
   pulseVolume,
+  bpm,
 ) {
   const synthsRef = useRef([]);
   const pulseSynthRef = useRef(null);
   const pulseLoopRef = useRef(null);
   const schedulerIdRef = useRef(null);
+  const schedulerRepeatIdRef = useRef(null);
 
   // update pulse volume
   useEffect(() => {
@@ -23,6 +25,11 @@ export function useAudioEngine(
       pulseSynthRef.current.volume.value = pulseVolume;
     }
   }, [pulseVolume]);
+
+  // update bpm live
+  useEffect(() => {
+    Tone.getTransport().bpm.value = bpm;
+  }, [bpm]);
 
   const ensureSynths = useCallback(() => {
     if (!stateRef.current.musicians.length) return;
@@ -79,6 +86,10 @@ export function useAudioEngine(
         Tone.getTransport().clear(schedulerIdRef.current);
         schedulerIdRef.current = null;
       }
+      if (schedulerRepeatIdRef.current !== null) {
+        Tone.getTransport().clear(schedulerRepeatIdRef.current);
+        schedulerRepeatIdRef.current = null;
+      }
 
       synthsRef.current.forEach((s) => s.dispose());
       synthsRef.current = [];
@@ -108,18 +119,19 @@ export function useAudioEngine(
 
       ensureSynths();
 
-      const now = Tone.getTransport().seconds;
-      stateRef.current.musicians.forEach((m) => {
-        if (m.nextNoteTime <= now) {
-          m.nextNoteTime = now + 0.1;
-        }
-      });
-
+      Tone.getTransport().bpm.value = bpm;
       Tone.getTransport().start();
       pulseLoopRef.current.start(0);
 
-      const schedule = () => {
-        const now = Tone.getTransport().seconds;
+      const tNow = Tone.now();
+      stateRef.current.musicians.forEach((m) => {
+        if (!Number.isFinite(m.nextNoteTime) || m.nextNoteTime <= tNow) {
+          m.nextNoteTime = tNow + 0.1;
+        }
+      });
+
+      const schedule = (time) => {
+        const now = time;
         const limit = now + LOOK_AHEAD;
 
         stateRef.current.musicians.forEach((musician, index) => {
@@ -140,10 +152,11 @@ export function useAudioEngine(
 
             const note = phrase.notes[musician.noteIndex];
             const duration = phrase.durations[musician.noteIndex];
-            const time = musician.nextNoteTime;
+            const eventTime = musician.nextNoteTime;
 
+            // schedule rests by skipping the synth trigger, but still advancing time
             if (note) {
-              synth.triggerAttackRelease(note, duration, time);
+              synth.triggerAttackRelease(note, duration, eventTime);
             }
 
             const durSec = Tone.Time(duration).toSeconds();
@@ -156,16 +169,16 @@ export function useAudioEngine(
             }
           }
         });
-
-        schedulerIdRef.current = Tone.getTransport().schedule(
-          schedule,
-          "+" + CHECK_INTERVAL,
-        );
       };
 
-      schedulerIdRef.current = Tone.getTransport().schedule(
+      // prime the scheduler once shortly after start
+      schedulerIdRef.current = Tone.getTransport().schedule(schedule, "+0.1");
+
+      // keep scheduling on a fixed interval without creating nested events
+      schedulerRepeatIdRef.current = Tone.getTransport().scheduleRepeat(
         schedule,
-        Tone.getTransport().seconds + 0.1,
+        CHECK_INTERVAL,
+        "+0.1",
       );
     };
 
