@@ -41,14 +41,9 @@ h1 {
   -webkit-text-fill-color: transparent;
 }
 
-.subtitle {
-  color: #666;
-  margin-top: 0.5rem;
-}
-
 .controls {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   margin-top: 1.5rem;
   align-items: center;
   flex-wrap: wrap;
@@ -83,9 +78,15 @@ button.primary:hover {
   transform: translateY(-1px);
 }
 
+.slider-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .musician-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-bottom: 3rem;
 }
@@ -96,6 +97,12 @@ button.primary:hover {
   border-radius: 8px;
   border: 1px solid #2a2a2a;
   transition: border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.musician-card.active {
+  border-color: #444;
 }
 
 .musician-header {
@@ -111,6 +118,51 @@ button.primary:hover {
   font-weight: 700;
   margin-bottom: 0.5rem;
   display: block;
+}
+
+.progress-bar-bg {
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 0.3s linear;
+}
+
+.status-text {
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+
+.badge {
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: #333;
+  font-size: 0.7rem;
+}
+
+.repetition-dots {
+  display: flex;
+  gap: 3px;
+  margin-top: 0.5rem;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #333;
+}
+
+.dot.active {
+  background: var(--text-primary);
 }
 
 .info-section {
@@ -130,4 +182,27 @@ button.primary:hover {
 
 .info-section p {
   margin-top: 1rem;
+}
+
+.wait-indicator {
+  color: #ffaa55;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.musician-card {
+  animation: enter 0.5s ease backwards;
 }

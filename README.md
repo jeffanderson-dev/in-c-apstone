@@ -1,18 +1,16 @@
+# Final Polish & Complete Implementation
+
 ## Goals
-- Add 4 different instrument types (Piano, Strings, Flute, Harmonium)
-- Implement octave variations for timbral richness
-- Add individual volume sliders for each musician
-- Add global pulse volume control
-- `instrumentFactories.js` with factory functions for each instrument type
-- Modified audio engine to assign instruments based on musician index
-- Volume sliders in musician cards
+- Implement ending logic (wait at phrase 53, gradual dropout)
+- Add ensemble size control (4-32 musicians)
+- Polish UI with animations and proper finish states
+- Dynamic musician count with slider
+- Enhanced UI showing finished musicians
 
 ## Key Concepts
-- Factory pattern for object creation
-- Sound synthesis parameters
-- Detune for pitch shifting/octaves
-- Range input elements
-- Real-time parameter control without re-renders
+- Complete state machines with multiple states
+- Conditional rendering based on finish flags
+- Dynamic array sizing
 
 ## Running This Project
 ```bash
